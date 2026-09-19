@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Town — sample demo</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <header class="wrap">
+    <nav class="nav"><a href="../">← All demos</a></nav>
+    <p class="eyebrow">Featured · sample showcase</p>
+    <h1>The Town</h1>
+    <p class="lede">A gamified multi-agent studio concept: specialized residents take missions, report status, and keep shared context. <strong>This page is a public sample</strong> with fictional residents and tasks.</p>
+    <p class="badge">Demo data · Not a live control plane</p>
+    <p class="lede" style="margin-top:0.8rem">In development with <strong>Claude Code</strong> and <strong>ChatGPT 6 Astra</strong>. Fixed local stack themes stay private where needed; only the showcase is public here.</p>
+  </header>
+
+  <main class="wrap" style="display:grid; gap:1rem; padding-bottom:2.5rem;">
+    <section class="panel">
+      <div class="row" style="justify-content:space-between;">
+        <h2 style="margin:0;">Mission board</h2>
+        <button id="shuffle" type="button" class="secondary">Shuffle sample missions</button>
+      </div>
+      <table>
+        <thead><tr><th>Mission</th><th>Owner</th><th>Status</th></tr></thead>
+        <tbody id="missions"></tbody>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2 style="margin-top:0;">Residents (sample)</h2>
+      <div id="residents" class="grid" style="padding:0;"></div>
+    </section>
+
+    <section class="panel">
+      <h2 style="margin-top:0;">Town log (sample)</h2>
+      <div id="log" class="log" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <script src="town.js"></script>
+</body>
+</html>

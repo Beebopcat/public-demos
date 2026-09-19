@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Permissions simulator — sample UI</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <header class="wrap">
+    <nav class="nav"><a href="../">← All demos</a></nav>
+    <p class="eyebrow">Learning tool · sample UI</p>
+    <h1>Linux permissions simulator</h1>
+    <p class="lede">Browser sample of the offline learning component. Fictional file <code>supply-ledger.txt</code>. Does not touch your real filesystem.</p>
+    <p class="badge">Demo data · Full tests on GitHub</p>
+  </header>
+
+  <main class="wrap" style="display:grid; gap:1rem; padding-bottom:2.5rem;">
+    <section class="panel">
+      <p>You are <strong>visitor</strong>. Goal: keep owner access, grant group read, deny visitor read.</p>
+      <p>Mode bits: <code id="mode">0600</code></p>
+      <div class="row">
+        <input id="cmd" size="40" placeholder="chmod g+r supply-ledger.txt" />
+        <button id="run" type="button">Run</button>
+        <button id="reset" type="button" class="secondary">Reset</button>
+      </div>
+      <p style="margin-top:0.8rem">
+        <button type="button" class="secondary" data-fill="ls -l supply-ledger.txt">ls -l</button>
+        <button type="button" class="secondary" data-fill="chmod g+r supply-ledger.txt">chmod g+r</button>
+        <button type="button" class="secondary" data-fill="chmod o-r supply-ledger.txt">chmod o-r</button>
+      </p>
+      <div id="out" class="log" style="margin-top:0.8rem"></div>
+    </section>
+    <p class="lede">Authoritative Node implementation + 10 tests: <a href="https://github.com/Beebopcat/cybersecurity-journey-labs/tree/main/projects/permissions-simulator">cybersecurity-journey-labs / permissions-simulator</a></p>
+  </main>
+
+  <script>
+  let bits = { u: 6, g: 0, o: 0 };
+  const file = "supply-ledger.txt";
+  const out = document.getElementById("out");
+  const modeEl = document.getElementById("mode");
+  function modeStr() { return "0" + bits.u + bits.g + bits.o; }
+  function access(who) {
+    const b = bits[who];
+    return ((b & 4) ? "r" : "-") + ((b & 2) ? "w" : "-") + ((b & 1) ? "x" : "-");
+  }
+  function refresh() { modeEl.textContent = modeStr(); }
+  function applySymbolic(expr) {
+    const parts = expr.split(",");
+    for (const part of parts) {
+      const m = part.trim().match(/^([ugoa]+)([+=-])([rwx]+)$/);
+      if (!m) return false;
+      let mask = 0;
+      if (m[3].includes("r")) mask |= 4;
+      if (m[3].includes("w")) mask |= 2;
+      if (m[3].includes("x")) mask |= 1;
+      const who = m[1] === "a" ? ["u","g","o"] : m[1].split("");
+      for (const w of who) {
+        if (!(w in bits)) return false;
+        if (m[2] === "+") bits[w] |= mask;
+        else if (m[2] === "-") bits[w] &= ~mask & 7;
+        else bits[w] = mask;
+      }
+    }
+    return true;
+  }
+  function goalCheck() {
+    if (bits.u >= 6 && (bits.g & 4) && !(bits.o & 4)) {
+      out.textContent += "Goal met (sample): owner kept, group read, visitor denied.\n";
+    }
+  }
+  function run(raw) {
+    const cmd = raw.trim();
+    if (!cmd) return;
+    if (cmd === "ls -l " + file || cmd === "ls -l") {
+      out.textContent += `(sample) mode ${modeStr()}; u=${access("u")} g=${access("g")} o=${access("o")} ${file}\n`;
+      return;
+    }
+    const ch = cmd.match(/^chmod\s+(\S+)\s+supply-ledger\.txt$/);
+    if (ch) {
+      if (/^[0-7]{3,4}$/.test(ch[1])) {
+        const s = ch[1].slice(-3);
+        bits = { u: +s[0], g: +s[1], o: +s[2] };
+        refresh();
+        out.textContent += `ok · mode now ${modeStr()}\n`;
+        return;
+      }
+      if (applySymbolic(ch[1])) {
+        refresh();
+        out.textContent += `ok · mode now ${modeStr()}\n`;
+        goalCheck();
+        return;
+      }
+    }
+    out.textContent += `unsupported in this sample UI (try chmod g+r ${file})\n`;
+  }
+  document.getElementById("run").onclick = () => run(document.getElementById("cmd").value);
+  document.getElementById("reset").onclick = () => { bits = { u: 6, g: 0, o: 0 }; refresh(); out.textContent = "reset to 0600\n"; };
+  document.querySelectorAll("[data-fill]").forEach(b => b.onclick = () => { document.getElementById("cmd").value = b.dataset.fill; });
+  refresh();
+  out.textContent = "Sample UI ready. Full grammar + tests live in the GitHub project.\n";
+  </script>
+</body>
+</html>

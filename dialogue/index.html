@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Natural Dialogue — sample</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <header class="wrap">
+    <nav class="nav"><a href="../">← All demos</a></nav>
+    <p class="eyebrow">Earlier tool · sample</p>
+    <h1>Natural Dialogue</h1>
+    <p class="lede">Sample NPC lines. Optional playback uses the browser speech API as a stand-in. The real project targets installed Windows TTS voices.</p>
+    <p class="badge">Demo data · Not Windows Natural Voices</p>
+  </header>
+
+  <main class="wrap" style="display:grid; gap:1rem; padding-bottom:2.5rem;">
+    <section class="panel">
+      <label for="line">Sample line</label><br />
+      <textarea id="line" rows="3" style="width:100%; margin-top:0.4rem">The archive doors open only for those who can explain their permissions.</textarea>
+      <div class="row" style="margin-top:0.8rem">
+        <button id="speak" type="button">Speak (browser sample)</button>
+        <button id="stop" type="button" class="secondary">Stop</button>
+      </div>
+      <p class="lede" style="margin-top:0.8rem">Source: <a href="https://github.com/Beebopcat/Natural-Dialogue">Beebopcat/Natural-Dialogue</a></p>
+    </section>
+  </main>
+
+  <script>
+  document.getElementById("speak").onclick = () => {
+    if (!window.speechSynthesis) { alert("Speech synthesis not available in this browser."); return; }
+    const u = new SpeechSynthesisUtterance(document.getElementById("line").value);
+    u.lang = "en-GB";
+    speechSynthesis.cancel();
+    speechSynthesis.speak(u);
+  };
+  document.getElementById("stop").onclick = () => speechSynthesis && speechSynthesis.cancel();
+  </script>
+</body>
+</html>
