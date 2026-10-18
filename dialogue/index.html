@@ -13,6 +13,7 @@
     <h1>Natural Dialogue</h1>
     <p class="lede">Sample NPC lines. Optional playback uses the browser speech API as a stand-in. The real project targets installed Windows TTS voices.</p>
     <p class="badge">Demo data · Not Windows Natural Voices</p>
+    <p class="lede">Your browser or selected voice provider may process text for speech.</p>
   </header>
 
   <main class="wrap" style="display:grid; gap:1rem; padding-bottom:2.5rem;">
@@ -35,7 +36,7 @@
     speechSynthesis.cancel();
     speechSynthesis.speak(u);
   };
-  document.getElementById("stop").onclick = () => speechSynthesis && speechSynthesis.cancel();
+  document.getElementById("stop").onclick = () => window.speechSynthesis?.cancel();
   </script>
 </body>
 </html>
