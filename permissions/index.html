@@ -17,7 +17,7 @@
 
   <main class="wrap" style="display:grid; gap:1rem; padding-bottom:2.5rem;">
     <section class="panel">
-      <p>You are <strong>visitor</strong>. Goal: keep owner access, grant group read, deny visitor read.</p>
+      <p>You are the fictional file owner, <strong>student</strong>. Goal: keep owner access, grant group read, deny visitor read.</p>
       <p>Mode bits: <code id="mode">0600</code></p>
       <div class="row">
         <input id="cmd" size="40" placeholder="chmod g+r supply-ledger.txt" />
@@ -46,6 +46,7 @@
   }
   function refresh() { modeEl.textContent = modeStr(); }
   function applySymbolic(expr) {
+    const candidate = { ...bits };
     const parts = expr.split(",");
     for (const part of parts) {
       const m = part.trim().match(/^([ugoa]+)([+=-])([rwx]+)$/);
@@ -56,16 +57,17 @@
       if (m[3].includes("x")) mask |= 1;
       const who = m[1] === "a" ? ["u","g","o"] : m[1].split("");
       for (const w of who) {
-        if (!(w in bits)) return false;
-        if (m[2] === "+") bits[w] |= mask;
-        else if (m[2] === "-") bits[w] &= ~mask & 7;
-        else bits[w] = mask;
+        if (!(w in candidate)) return false;
+        if (m[2] === "+") candidate[w] |= mask;
+        else if (m[2] === "-") candidate[w] &= ~mask & 7;
+        else candidate[w] = mask;
       }
     }
+    bits = candidate;
     return true;
   }
   function goalCheck() {
-    if (bits.u >= 6 && (bits.g & 4) && !(bits.o & 4)) {
+    if (bits.u === 6 && bits.g === 4 && bits.o === 0) {
       out.textContent += "Goal met (sample): owner kept, group read, visitor denied.\n";
     }
   }
@@ -78,11 +80,12 @@
     }
     const ch = cmd.match(/^chmod\s+(\S+)\s+supply-ledger\.txt$/);
     if (ch) {
-      if (/^[0-7]{3,4}$/.test(ch[1])) {
+      if (/^0?[0-7]{3}$/.test(ch[1])) {
         const s = ch[1].slice(-3);
         bits = { u: +s[0], g: +s[1], o: +s[2] };
         refresh();
         out.textContent += `ok · mode now ${modeStr()}\n`;
+        goalCheck();
         return;
       }
       if (applySymbolic(ch[1])) {
