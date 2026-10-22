@@ -108,7 +108,7 @@ Then open http://localhost:8000 (the Town is at `/town/`, the permissions demo a
 
 **Town credit:** The Town sample showcase describes a studio concept in active development with **Claude Code** and **ChatGPT 6 Astra**. The interactive page here is a public demonstration with fictional residents and missions — not a live production control plane.
 
-**License:** demo UI code in this repository is MIT unless a file says otherwise. Linked product pages and game concepts keep their own terms.
+**License:** Copyright (c) 2026 Casey Shingledecker. All rights reserved. Source-available for viewing and for personal, non-commercial running only; this is not open source. See [LICENSE](LICENSE). Linked product pages and game concepts keep their own terms.
 
 Built by Casey Shingledecker with AI-assisted development.
 
