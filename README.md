@@ -1,5 +1,34 @@
 # Public demos — Casey Shingledecker (Beebopcat)
 
+**Live, browser-viewable sample demos built with plain HTML, CSS and JavaScript on GitHub Pages: an Agent Town sample, a Linux file-permissions simulator UI and a dialogue sampler.**
+
+**Why it matters:** shows I can ship small, dependency-free web demos, host them for free on GitHub Pages, keep them safe for the public (fictional data only, no live connections, no commands run on the host) and back them with regression tests.
+
+**Stack:** HTML, CSS, JavaScript (no framework, no build step), GitHub Pages, Node.js built-in test runner.
+
+### Proof
+
+- **8 passing regression tests** (`node --test tests/demo-regression.test.mjs`). They load each demo's real inline script and check the permissions logic and the dialogue Stop button. I ran them on Windows 11 with Node.js 24 (8 of 8 passed). They have no dependencies and are not yet run automatically in CI.
+- **Live demos:** [hub](https://beebopcat.github.io/public-demos/), [The Town](https://beebopcat.github.io/public-demos/town/), [Permissions Lab](https://beebopcat.github.io/public-demos/permissions/), [Natural Dialogue](https://beebopcat.github.io/public-demos/dialogue/).
+- Screenshots and short clips of The Town and the Permissions Lab are below.
+
+### Quick start
+
+```sh
+git clone https://github.com/Beebopcat/public-demos.git
+cd public-demos
+python -m http.server 8000      # then open http://localhost:8000
+node --test tests/demo-regression.test.mjs   # optional: run the tests (Node.js 22+)
+```
+
+### Limitations
+
+- Everything here is a sample. The Town uses fictional residents and missions and does not connect to any live agent; the permissions demo is a simulation, not a shell or a real filesystem.
+- The tests cover the demo scripts' logic, not visual layout or every browser. The speech demo depends on the browser's own speech support.
+- The full permissions-simulator implementation (with its own 10 tests) lives in [cybersecurity-journey-labs](https://github.com/Beebopcat/cybersecurity-journey-labs).
+
+---
+
 **Live, browser-viewable sample demonstrations of current and earlier projects.**
 
 [**▶ Demo hub**](https://beebopcat.github.io/public-demos/) · [**The Town**](https://beebopcat.github.io/public-demos/town/) · [**Permissions Lab**](https://beebopcat.github.io/public-demos/permissions/) · [**Source**](https://github.com/Beebopcat/public-demos)
@@ -106,7 +135,7 @@ Then open http://localhost:8000 (the Town is at `/town/`, the permissions demo a
 
 ## Credits & disclaimers
 
-**Town credit:** The Town sample showcase describes a studio concept in active development with **Claude Code** and **ChatGPT 6 Astra**. The interactive page here is a public demonstration with fictional residents and missions — not a live production control plane.
+**Town credit:** The Town sample showcase describes a studio concept in active development with **Claude Code**. The interactive page here is a public demonstration with fictional residents and missions — not a live production control plane.
 
 **License:** Copyright (c) 2026 Casey Shingledecker. All rights reserved. Source-available for viewing and for personal, non-commercial running only; this is not open source. See [LICENSE](LICENSE). Linked product pages and game concepts keep their own terms.
 
