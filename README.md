@@ -1,5 +1,7 @@
 # Public demos — Casey Shingledecker (Beebopcat)
 
+[![tests](https://github.com/Beebopcat/public-demos/actions/workflows/tests.yml/badge.svg)](https://github.com/Beebopcat/public-demos/actions/workflows/tests.yml)
+
 **Live, browser-viewable sample demos built with plain HTML, CSS and JavaScript on GitHub Pages: an Agent Town sample, a Linux file-permissions simulator UI and a dialogue sampler.**
 
 **Why it matters:** shows I can ship small, dependency-free web demos, host them for free on GitHub Pages, keep them safe for the public (fictional data only, no live connections, no commands run on the host) and back them with regression tests.
@@ -8,7 +10,7 @@
 
 ### Proof
 
-- **8 passing regression tests** (`node --test tests/demo-regression.test.mjs`). They load each demo's real inline script and check the permissions logic and the dialogue Stop button. I ran them on Windows 11 with Node.js 24 (8 of 8 passed). They have no dependencies and are not yet run automatically in CI.
+- **8 passing regression tests** (`node --test tests/demo-regression.test.mjs`). They load each demo's real inline script and check the permissions logic and the dialogue Stop button. I ran them on Windows 11 with Node.js 24 (8 of 8 passed). They have no dependencies; GitHub Actions runs them on every push.
 - **Live demos:** [hub](https://beebopcat.github.io/public-demos/), [The Town](https://beebopcat.github.io/public-demos/town/), [Permissions Lab](https://beebopcat.github.io/public-demos/permissions/), [Natural Dialogue](https://beebopcat.github.io/public-demos/dialogue/).
 - Screenshots and short clips of The Town and the Permissions Lab are below.
 
